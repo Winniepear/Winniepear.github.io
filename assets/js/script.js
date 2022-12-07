@@ -86,7 +86,7 @@ function downloadCSV() {
   const uri = "data:text/csv;charset=utf-8,\ufeff" + encodeURIComponent(str);
   const link = document.createElement("a");
   link.href = uri;
-  link.download = "数据2022.xlsx";
+  link.download = "数据2022.txt";
   link.click();
 }
 
