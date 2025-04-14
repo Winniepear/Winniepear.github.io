@@ -1,70 +1,478 @@
-<!doctype html>
-<html lang="zh">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>文献阅读首页</title>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI系统</title>
+    <style>
+        body,div,span,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,code,del,dfn,em,img,q,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,dialog,figure,footer,header,hgroup,nav,section,input,select,option,textarea{margin:0;padding:0;}
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #f1f1f1; /* Light gray background */
+            background-image: linear-gradient(270deg, #4a90e2, #ffffff); /* Gradient from blue to white */
+            font-family: "Calibri", "Roboto", sans-serif;
+        }
+        .messages .message .username {
+            font-size: 12px;
+            color: #888; /* Light gray for username */
+            margin-right: 10px;
+        }
+        .chat_window {
+            position: absolute;
+            width: calc(100% - 20px);
+            max-width: 800px;
+            height: 750px;
+            border-radius: 10px;
+            background-color: #fff;
+            left: 50%;
+            top: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            overflow: hidden;
+        }
+        .top_menu {
+            background-color: #fff;
+            width: 100%;
+            padding: 10px 0;
+            height: 40px;
+            box-shadow: 0 1px 30px rgba(0, 0, 0, 0.1);
+        }
+        .top_menu .title {
+            text-align: center;
+            color: #333;
+            font-size: 14px;
+        }
+        .messages {
+            position: relative;
+            list-style: none;
+            padding: 20px 10px 0 10px;
+            margin: 0;
+            height: 550px; /* Adjusted height to make room for buttons */
+            overflow: hidden;
+            overflow-y: scroll;
+            white-space: pre-line
+        }
+        .messages .message {
+            clear: both;
+            overflow: hidden;
+            margin-bottom: 20px;
+            transition: all 0.5s linear;
+        }
+        .messages .message.left .avatar {
+            background-color: #4a90e2; /* Blue background for left avatar */
+            background-size: 100%;
+            float: left;
+        }
+        .messages .message.left .text_wrapper {
+            background-color: #f0f4f8; /* Light gray for left messages */
+            margin-left: 10px;
+        }
+        .messages .message.left .text {
+            color: #4a90e2; /* Blue text color for left messages */
+        }
+        .messages .message.right .avatar {
+            background-color: #4a90e2; /* Blue background for right avatar */
+            background-size: 100%;
+            float: right;
+        }
+        .messages .message.right .text_wrapper {
+            background-color: #e7f1fe; /* Lighter blue for right messages */
+            margin-right: 10px;
+            float: right;
+        }
+        .messages .message.right .text {
+            color: #4a90e2; /* Blue text color for right messages */
+        }
+        .messages .message .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .messages .message .text_wrapper {
+            display: inline-block;
+            padding: 20px;
+            border-radius: 6px;
+            width: calc(100% - 85px);
+            min-width: 100px;
+            position: relative;
+        }
+        .messages .message .text {
+            font-size: 18px;
+            font-weight: 300;
+        }
+        .bottom_wrapper {
+            position: relative;
+            width: 100%;
+            background-color: #fff;
+            padding: 20px;
+            height:100px;
+            position: absolute;
+            bottom: 0;
+        }
+        .bottom_wrapper .message_input_wrapper {
+            display: inline-block;
+            height: 45px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            width: calc(100% - 160px);
+            position: relative;
+            padding: 0 20px;
+        }
+        .bottom_wrapper .message_input_wrapper .message_input {
+            border: none;
+            height: 100%;
+            box-sizing: border-box;
+            width: calc(100% - 40px);
+            position: absolute;
+            outline-width: 0;
+            color: #333;
+            background-color: #fff;
+        }
+        .bottom_wrapper .send_message {
+            width: 140px;
+            height: 45px;
+            display: inline-block;
+            border-radius: 10px;
+            background-color: #4a90e2; /* Blue button background */
+            border: 2px solid #4a90e2;
+            background-image: linear-gradient(90deg, #0077e3, #4a90e2); /* Blue gradient */
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.2s linear;
+            text-align: center;
+            float: right;
+        }
+        .bottom_wrapper .send_message:hover {
+            color: #fff;
+            background-color: #0077e3;
+        }
+        .message_template {
+            display: none;
+        }
+        .button_wrapper {
+            display: flex;
+            flex-direction: column;
+            padding-left: 60px;
+        }
+        .button_wrapper .button {
+            max-width: 250px;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #4a90e2; /* Blue background for buttons */
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        .button_wrapper .button:hover {
+            background-color: #0077e3; /* Darker blue hover for buttons */
+        }
 
-<link rel="stylesheet" type="text/css" href="assets/css/styles.css">
-    <!-- Bootstrap core CSS -->
- <link href="assets/css/bootstrap.css" rel="stylesheet" />
+        .bottom_wrapper .send_message {
+            width: 140px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            background-color: #4a90e2; /* Blue button background */
+            border: 2px solid #4a90e2;
+            background-image: linear-gradient(90deg, #0077e3, #4a90e2); /* Blue gradient */
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.2s linear;
+            text-align: center;
+            float: right;
+        }
+
+        .send_message img {
+            max-width: 40%;
+            max-height: 60%;
+        }
+
+    </style>
+
 </head>
-<body style="background-image: url(/assets/img/68.png) ; background-size: 100% 100%;
-background-size: cover;
-background-repeat: no-repeat;
-background-attachment: fixed;  
-background-position: center;">
-
-<div class="wrapper " style=" background:rgba(80,163,162,0.6);">
-
-	<div class="container">
-		<h1>Welcome！请点击链接进入文献阅读环节</h1>
-        <div class="row">
-		<form class="form col-md-3">
-			<a href="index1.html">G1组-第1篇</a>
-			<a href="index.html">G1组-第2篇</a>
-			<a href="index.html">G1组-第3篇</a>
-			<a href="index.html">G1组-第4篇</a>
-		</form>
-        <form class="form col-md-3">
-			<a href="index.html">G2组-第1篇</a>
-			<a href="index.html">G2组-第2篇</a>
-			<a href="index.html">G2组-第3篇</a>
-			<a href="index.html">G2组-第4篇</a>
-		</form>
-        <form class="form col-md-3">
-			<a href="index.html">G3组-第1篇</a>
-			<a href="index.html">G3组-第2篇</a>
-			<a href="index.html">G3组-第3篇</a>
-			<a href="index.html">G3组-第4篇</a>
-		</form>
-        <form class="form col-md-3">
-			<a href="index.html">G4组-第1篇</a>
-			<a href="index.html">G4组-第2篇</a>
-			<a href="index.html">G4组-第3篇</a>
-			<a href="index.html">G4组-第4篇</a>
-		</form>
+<body>
+<div class="chat_window">
+    <div class="top_menu">
+        <div class="title">AI系统</div>
     </div>
-	</div>
-	
-	<ul class="bg-bubbles">
-		<li></li>
-		<li></li>
-		<li></li>
-		<li></li>
-		<li></li>
-		<li></li>
-		<li></li>
-		<li></li>
-		<li></li>
-		<li></li>
-	</ul>
-	
+    <ul class="messages" id="message-list">
+        <!-- 动态消息将通过 JavaScript 逐字输出 -->
+    </ul>
+
+    <!-- Buttons for '了解' and '不了解' below the second message -->
+    <div class="button_wrapper" id="buttonWrapper">
+    <button class="button" id="understandBtn">了解</button>
+    <button class="button" id="dontUnderstandBtn">不了解</button>
+    </div>
+
+    <!-- Buttons for '什么是气候变化', '气候变化的危害', '气候变化的产生原因' -->
+    <div class="button_wrapper" id="topicWrapper" style="display:none;">
+        <button class="button" id="climateChangeBtn">什么是气候变化</button>
+        <button class="button" id="climateImpactBtn">气候变化的危害</button>
+        <button class="button" id="climateCauseBtn">气候变化的产生原因</button>
+    </div>
+
+    <div class="bottom_wrapper clearfix">
+        <div class="message_input_wrapper">
+            <input class="message_input" placeholder="请输入..." />
+        </div>
+        <div class="send_message">
+            <img src="src/发送.png" alt="Send" style="width: 100%; height: 100%; border-radius: 10px;">
+        </div>
+    </div>
 </div>
 
-<script type="text/javascript" src="assets/js/jquery-2.1.1.min.js"></script>
+<!-- Ensure jQuery is loaded first -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+<script>
+    $(document).ready(function() {
+        var message_side = 'right';  // 默认消息位置为右侧
+
+        // 发送用户消息的函数
+        var sendMessage = function(text, side) {
+            if (text.trim() === '') return;
+            var $messages = $('#message-list');
+            var $message = $('<li class="message ' + side + '"></li>');
+            $message.append('<div class="avatar" style="background-image: url(src/img2.jpg)"></div>');
+            $message.append('<div class="text_wrapper"><div class="text">' + text + '</div></div>');
+            $messages.append($message);
+            $messages.animate({
+                scrollTop: $messages.prop('scrollHeight')
+            }, 300);
+        };
+
+        // 模拟 AI 打字的函数
+        var sendAiMessage = function(text, delay, callback) {
+            var newMessage = $('<li class="message left"></li>');
+            newMessage.append('<div class="avatar" style="background-image: url(src/img1.jpg);"></div>');
+            var textWrapper = $('<div class="text_wrapper"><div class="text"></div></div>');
+            newMessage.append(textWrapper);
+            $('#message-list').append(newMessage);
+            $('#message-list').animate({
+                scrollTop: $('#message-list').prop('scrollHeight')
+            }, 300);
+
+            // 修改页面内的标题为“正在输入……”
+            $('.title').text("正在输入……");
+
+            var i = 0;
+            var interval = setInterval(function() {
+                if (i < text.length) {
+                    textWrapper.find('.text').text(text.substring(0, i + 1));
+                    i++;
+                } else {
+                    clearInterval(interval);
+                    if (callback) callback();
+                    // 恢复标题为“AI系统”
+                    $('.title').text("AI系统");
+                }
+            }, delay); // 打字延迟
+        };
+
+        // 动态生成初始消息
+        $('#buttonWrapper').hide();
+        sendAiMessage("您好!欢迎使用 AI智能咨询系统。本系统专门解答气候变化的相关问题，欢迎随时使用本系统进行提问。请输入任意指令开启对话。", 50, function() {
+            sendAiMessage("您之前是否了解过气候变化？", 50, function() {
+                // 显示按钮
+                $('#message-list').append( $('#buttonWrapper'));
+                $('#buttonWrapper').show();
+            });
+        });
+
+        // 按钮点击事件，更新消息并隐藏按钮
+        $('#understandBtn').click(function() {
+            var userInput = "了解";
+            sendMessage(userInput, 'right');  // 用户消息
+
+            $('#buttonWrapper').hide(); // 隐藏 "了解/不了解" 按钮
+
+            // 停留几秒钟后显示AI回复
+            setTimeout(function() {
+                sendAiMessage("您想要了解气候变化的哪些内容？", 50, function() {
+                    $('#message-list').append( $('#topicWrapper'));
+                    $('#topicWrapper').show(); // 显示话题按钮
+                });
+            }, 2000); // 等待2秒
+        });
+
+        $('#dontUnderstandBtn').click(function() {
+            var userInput = "不了解";
+            sendMessage(userInput, 'right');  // 用户消息
+
+            $('#buttonWrapper').hide(); // 隐藏 "了解/不了解" 按钮
+
+            // 停留几秒钟后显示AI回复
+            setTimeout(function() {
+                sendAiMessage("您想要了解气候变化的哪些内容？", 50, function() {
+                    $('#message-list').append( $('#topicWrapper'));
+                    $('#topicWrapper').show(); // 显示话题按钮
+                });
+            }, 2000); // 等待2秒
+        });
+
+        // 话题按钮点击事件
+        $('#climateChangeBtn').click(function() {
+            var userInput = "什么是气候变化";
+            sendMessage(userInput, 'right');  // 用户消息
+
+            $('#topicWrapper').hide(); // 隐藏话题按钮
+
+            // 停留几秒钟后显示AI回复
+            setTimeout(function() {
+                var text1 = "气候变化是指气候系统的长期统计特征（如温度、降水、极端天气频率等）发生显著变化。科学界已达成高度共识：人类活动是当前气候变化的主因，概率超过90%。气候变化已成事实，我们或许可以尝试献出自己的一份力。";
+                var text2 = "2021年世界卫生组织（WHO）发布声明称：“全球气候变化对公众的健康威胁超过任何一种疾病”。极端气温事件，如热浪和寒潮，都会加剧心肺疾病发病和死亡风险，尤其对老年人、儿童、孕妇等脆弱群体危害更大。然而面对这些后果，我们可能还没有意识到严重性，有的人或许还会怀疑气候变化的真实性。";
+                sendAiMessage(text1, 50, function() {
+                    sendAiMessage(text2, 50, function() {
+                        sendAiMessage("您知道应该如何应对气候变化吗？", 50, function() {
+                            $('#buttonWrapper').html('');  // 清空按钮
+                            $('#buttonWrapper').append('<button class="button" id="knowBtn">知道</button>');
+                            $('#buttonWrapper').append('<button class="button" id="dontKnowBtn">不知道</button>');
+                            $('#message-list').append( $('#buttonWrapper'));
+                            $('#buttonWrapper').show();  // 显示新的按钮
+                        });
+                    });
+                });
+            }, 2000); // 等待2秒
+        });
+
+        $('#climateImpactBtn').click(function() {
+            var userInput = "气候变化的危害";
+            sendMessage(userInput, 'right');  // 用户消息
+
+            $('#topicWrapper').hide(); // 隐藏话题按钮
+
+            // 停留几秒钟后显示AI回复
+            setTimeout(function() {
+                var text1 = "气候变化是指气候系统的长期统计特征（如温度、降水、极端天气频率等）发生显著变化。科学界已达成高度共识：人类活动是当前气候变化的主因，概率超过90%。气候变化已成事实，我们或许可以尝试献出自己的一份力。";
+                var text2 = "2021年世界卫生组织（WHO）发布声明称：“全球气候变化对公众的健康威胁超过任何一种疾病”。极端气温事件，如热浪和寒潮，都会加剧心肺疾病发病和死亡风险，尤其对老年人、儿童、孕妇等脆弱群体危害更大。然而面对这些后果，我们可能还没有意识到严重性，有的人或许还会怀疑气候变化的真实性。";
+                sendAiMessage(text1, 50, function() {
+                    sendAiMessage(text2, 50, function() {
+                        sendAiMessage("您知道应该如何应对气候变化吗？", 50, function() {
+                            $('#buttonWrapper').html('');  // 清空按钮
+                            $('#buttonWrapper').append('<button class="button" id="knowBtn">知道</button>');
+                            $('#buttonWrapper').append('<button class="button" id="dontKnowBtn">不知道</button>');
+                            $('#message-list').append( $('#buttonWrapper'));
+                            $('#buttonWrapper').show();  // 显示新的按钮
+                        });
+                    });
+                });
+            }, 2000); // 等待2秒
+        });
+
+        $('#climateCauseBtn').click(function() {
+            var userInput = "气候变化的产生原因";
+            sendMessage(userInput, 'right');  // 用户消息
+
+            $('#topicWrapper').hide(); // 隐藏话题按钮
+
+            // 停留几秒钟后显示AI回复
+            setTimeout(function() {
+                var text1 = "气候变化是指气候系统的长期统计特征（如温度、降水、极端天气频率等）发生显著变化。科学界已达成高度共识：人类活动是当前气候变化的主因，概率超过90%。气候变化已成事实，我们或许可以尝试献出自己的一份力。";
+                var text2 = "2021年世界卫生组织（WHO）发布声明称：“全球气候变化对公众的健康威胁超过任何一种疾病”。极端气温事件，如热浪和寒潮，都会加剧心肺疾病发病和死亡风险，尤其对老年人、儿童、孕妇等脆弱群体危害更大。然而面对这些后果，我们可能还没有意识到严重性，有的人或许还会怀疑气候变化的真实性。";
+                sendAiMessage(text1, 50, function() {
+                    sendAiMessage(text2, 50, function() {
+                        sendAiMessage("您知道应该如何应对气候变化吗？", 50, function() {
+                            $('#buttonWrapper').html('');  // 清空按钮
+                            $('#buttonWrapper').append('<button class="button" id="knowBtn">知道</button>');
+                            $('#buttonWrapper').append('<button class="button" id="dontKnowBtn">不知道</button>');
+                            $('#message-list').append( $('#buttonWrapper'));
+                            $('#buttonWrapper').show();  // 显示新的按钮
+                        });
+                    });
+                });
+            }, 2000); // 等待2秒
+        });
+
+// 点击“知道”按钮时
+// 点击“知道”按钮时
+        $('#buttonWrapper').on('click', '#knowBtn', function() {
+            var userInput = "知道";
+            sendMessage(userInput, 'right');  // 用户消息
+            $('#buttonWrapper').hide(); // 隐藏按钮
+
+            setTimeout(function() {
+                var actionCall = `行动呼吁：气候变化的不可逆性已显现，但人类仍可通过行动减缓危机。
+                根据世界卫生组织建议，可以采取以下举措来缓解气候变化：
+                ——请减少汽车使用，选择自行车、步行和公共交通;
+                ——请减少使用一次性塑料容器，选择环保购物袋;
+                ——请使用节能家用装置；
+                ——请限制水的过量使用。`;
+                sendAiMessage(actionCall, 50, function() {
+                    sendAiMessage("——通过以上介绍，您对气候变化的了解是否有所增长呢？", 50, function() {
+                        $('#buttonWrapper').html('');  // 清空按钮
+                        $('#buttonWrapper').append('<button class="button" id="increaseBtn">有所增长</button>');
+                        $('#buttonWrapper').append('<button class="button" id="noIncreaseBtn">并未增长</button>');
+                        $('#message-list').append( $('#buttonWrapper'));
+                        $('#buttonWrapper').show();  // 显示新的按钮
+                    });
+                });
+            }, 2000); // 等待2秒后显示AI的最终回复
+        });
+
+// 点击“不知道”按钮时
+        $('#buttonWrapper').on('click', '#dontKnowBtn', function() {
+            var userInput = "不知道";
+            sendMessage(userInput, 'right');  // 用户消息
+            $('#buttonWrapper').hide(); // 隐藏按钮
+
+            setTimeout(function() {
+                var actionCall = `行动呼吁：气候变化的不可逆性已显现，但人类仍可通过行动减缓危机。
+                根据世界卫生组织建议，可以采取以下举措来缓解气候变化：
+                ——请减少汽车使用，选择自行车、步行和公共交通;
+                ——请减少使用一次性塑料容器，选择环保购物袋;
+                ——请使用节能家用装置；
+                ——请限制水的过量使用。`;
+                sendAiMessage(actionCall, 50, function() {
+                    sendAiMessage("——通过以上介绍，您对气候变化的了解是否有所增长呢？", 50, function() {
+                        $('#buttonWrapper').html('');  // 清空按钮
+                        $('#buttonWrapper').append('<button class="button" id="increaseBtn">有所增长</button>');
+                        $('#buttonWrapper').append('<button class="button" id="noIncreaseBtn">并未增长</button>');
+                        $('#message-list').append( $('#buttonWrapper'));
+                        $('#buttonWrapper').show();  // 显示新的按钮
+                    });
+                });
+            }, 2000); // 等待2秒后显示AI的最终回复
+        });
+        // 点击“有所增长”与“并未增长”按钮时
+        $('#buttonWrapper').on('click', '#increaseBtn', function() {
+            var userInput = "有所增长";
+            sendMessage(userInput, 'right');  // 用户消息
+            $('#buttonWrapper').hide(); // 隐藏按钮
+
+            setTimeout(function() {
+                var conclusion = "气候变化是当前人类面临的重大全球性挑战，需政府、企业与个人共同行动以减缓其影响。如需更详细数据，可参考联合国政府间气候变化专门委员会（IPCC）报告或世界气象组织（WMO）发布的研究。";
+                sendAiMessage(conclusion, 50, function() {
+                    sendAiMessage("【互动已结束，请关闭对话框，返回问卷继续作答】", 50);
+                });
+            }, 2000); // 等待2秒后显示AI的最终回复
+        });
+
+        $('#buttonWrapper').on('click', '#noIncreaseBtn', function() {
+            var userInput = "并未增长";
+            sendMessage(userInput, 'right');  // 用户消息
+            $('#buttonWrapper').hide(); // 隐藏按钮
+
+            setTimeout(function() {
+                var conclusion = "气候变化是当前人类面临的重大全球性挑战，需政府、企业与个人共同行动以减缓其影响。如需更详细数据，可参考联合国政府间气候变化专门委员会（IPCC）报告或世界气象组织（WMO）发布的研究。";
+                sendAiMessage(conclusion, 50, function() {
+                    sendAiMessage("【互动已结束，请关闭对话框，返回问卷继续作答】", 50);
+                });
+            }, 2000); // 等待2秒后显示AI的最终回复
+        });
+
+    });
+</script>
 
 
 </body>
