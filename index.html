@@ -227,7 +227,7 @@
             <input class="message_input" placeholder="请输入..." />
         </div>
         <div class="send_message">
-            <img src="src/发送.png" alt="Send" style="width: 100%; height: 100%; border-radius: 10px;">
+            <img src="发送.png" alt="Send" style="width: 100%; height: 100%; border-radius: 10px;">
         </div>
     </div>
 </div>
@@ -244,7 +244,7 @@
             if (text.trim() === '') return;
             var $messages = $('#message-list');
             var $message = $('<li class="message ' + side + '"></li>');
-            $message.append('<div class="avatar" style="background-image: url(src/img2.jpg)"></div>');
+            $message.append('<div class="avatar" style="background-image: url(img2.jpg)"></div>');
             $message.append('<div class="text_wrapper"><div class="text">' + text + '</div></div>');
             $messages.append($message);
             $messages.animate({
@@ -255,7 +255,7 @@
         // 模拟 AI 打字的函数
         var sendAiMessage = function(text, delay, callback) {
             var newMessage = $('<li class="message left"></li>');
-            newMessage.append('<div class="avatar" style="background-image: url(src/img1.jpg);"></div>');
+            newMessage.append('<div class="avatar" style="background-image: url(img1.jpg);"></div>');
             var textWrapper = $('<div class="text_wrapper"><div class="text"></div></div>');
             newMessage.append(textWrapper);
             $('#message-list').append(newMessage);
