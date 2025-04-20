@@ -503,8 +503,7 @@
                 });
             }, 1000); // 等待2秒后显示AI的最终回复
             $('#buttonWrapper').on('click', '#exitBtn', function() {
-                window.close();  // 关闭当前浏览器窗口
-            });
+                window.history.back();  // 返回上一页
         });
 
         $('#buttonWrapper').on('click', '#noIncreaseBtn', function() {
@@ -531,7 +530,7 @@
                 });
             }, 1000); // 等待2秒后显示AI的最终回复
             $('#buttonWrapper').on('click', '#exitBtn', function() {
-                window.close();  // 关闭当前浏览器窗口
+                window.history.back();  // 返回上一页
             });
         });
 
