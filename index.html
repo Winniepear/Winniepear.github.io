@@ -226,7 +226,7 @@
             <input id="userInput" class="message_input" placeholder="请输入..." />
         </div>
         <div class="send_message" id="sendMessageBtn">
-            <img src="发送.png" alt="Send" style="width: 100%; height: 100%; border-radius: 10px;">
+            <img src="IMAGE/发送.jpg" alt="Send" style="width: 100%; height: 100%; border-radius: 10px;">
         </div>
     </div>
 
@@ -265,7 +265,7 @@
                     textWrapper.find('.text').text(text.substring(0, i + 1));
                     i++;
                     // 每次字母输出后，滚动页面
-                    $('#message-list').scrollTop($('#message-list')[0].scrollHeight);
+                    $('#message-list').scrollTop($('#message-list')[0].scrollHeight);  // 滚动到底部
                 } else {
                     clearInterval(interval);
                     if (callback) callback();
@@ -345,7 +345,7 @@
                             $('#message-list').append( $('#buttonWrapper'));
                             $('#buttonWrapper').show();  // 显示新的按钮
                             setTimeout(function() {
-                                $('#topicWrapper')[0].scrollIntoView({
+                                $('#buttonWrapper')[0].scrollIntoView({
                                     behavior: 'smooth',
                                     block: 'start'
                                 });
@@ -375,7 +375,7 @@
                             $('#message-list').append( $('#buttonWrapper'));
                             $('#buttonWrapper').show();  // 显示新的按钮
                             setTimeout(function() {
-                                $('#topicWrapper')[0].scrollIntoView({
+                                $('#buttonWrapper')[0].scrollIntoView({
                                     behavior: 'smooth',
                                     block: 'start'
                                 });
@@ -405,7 +405,7 @@
                             $('#message-list').append( $('#buttonWrapper'));
                             $('#buttonWrapper').show();  // 显示新的按钮
                             setTimeout(function() {
-                                $('#topicWrapper')[0].scrollIntoView({
+                                $('#buttonWrapper')[0].scrollIntoView({
                                     behavior: 'smooth',
                                     block: 'start'
                                 });
@@ -438,7 +438,7 @@
                         $('#message-list').append( $('#buttonWrapper'));
                         $('#buttonWrapper').show();  // 显示新的按钮
                         setTimeout(function() {
-                            $('#topicWrapper')[0].scrollIntoView({
+                            $('#buttonWrapper')[0].scrollIntoView({
                                 behavior: 'smooth',
                                 block: 'start'
                             });
@@ -469,7 +469,7 @@
                         $('#message-list').append( $('#buttonWrapper'));
                         $('#buttonWrapper').show();  // 显示新的按钮
                         setTimeout(function() {
-                            $('#topicWrapper')[0].scrollIntoView({
+                            $('#buttonWrapper')[0].scrollIntoView({
                                 behavior: 'smooth',
                                 block: 'start'
                             });
@@ -494,7 +494,7 @@
                         $('#message-list').append($('#buttonWrapper'));
                         $('#buttonWrapper').show();  // 显示退出按钮
                         setTimeout(function() {
-                            $('#topicWrapper')[0].scrollIntoView({
+                            $('#buttonWrapper')[0].scrollIntoView({
                                 behavior: 'smooth',
                                 block: 'start'
                             });
@@ -504,6 +504,7 @@
             }, 1000); // 等待2秒后显示AI的最终回复
             $('#buttonWrapper').on('click', '#exitBtn', function() {
                 window.history.back();  // 返回上一页
+            });
         });
 
         $('#buttonWrapper').on('click', '#noIncreaseBtn', function() {
@@ -521,7 +522,7 @@
                         $('#message-list').append($('#buttonWrapper'));
                         $('#buttonWrapper').show();  // 显示退出按钮
                         setTimeout(function() {
-                            $('#topicWrapper')[0].scrollIntoView({
+                            $('#buttonWrapper')[0].scrollIntoView({
                                 behavior: 'smooth',
                                 block: 'start'
                             });
