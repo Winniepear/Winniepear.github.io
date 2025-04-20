@@ -211,8 +211,8 @@
 
     <!-- Buttons for '了解' and '不了解' below the second message -->
     <div class="button_wrapper" id="buttonWrapper">
-    <button class="button" id="understandBtn">了解</button>
-    <button class="button" id="dontUnderstandBtn">不了解</button>
+        <button class="button" id="understandBtn">了解</button>
+        <button class="button" id="dontUnderstandBtn">不了解</button>
     </div>
 
     <!-- Buttons for '40岁以上人群', '男性', '女性' -->
@@ -230,329 +230,329 @@
         </div>
     </div>
 
-<!-- Ensure jQuery is loaded first -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Ensure jQuery is loaded first -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script>
-    $('#buttonWrapper').hide();//修改hide语句
-    $(document).ready(function() {
-        var message_side = 'right';  // 默认消息位置为右侧
+    <script>
+        $('#buttonWrapper').hide();//修改hide语句
+        $(document).ready(function() {
+            var message_side = 'right';  // 默认消息位置为右侧
 
-        // 发送用户消息的函数
-        var sendMessage = function(text, side) {
-            if (text.trim() === '') return;
-            var $messages = $('#message-list');
-            var $message = $('<li class="message ' + side + '"></li>');
-            $message.append('<div class="avatar" style="background-image: url(src/img2.jpg)"></div>');
-            $message.append('<div class="text_wrapper"><div class="text">' + text + '</div></div>');
-            $messages.append($message);
-            $messages.scrollTop($messages[0].scrollHeight);
-        };
+            // 发送用户消息的函数
+            var sendMessage = function(text, side) {
+                if (text.trim() === '') return;
+                var $messages = $('#message-list');
+                var $message = $('<li class="message ' + side + '"></li>');
+                $message.append('<div class="avatar" style="background-image: url(src/img2.jpg)"></div>');
+                $message.append('<div class="text_wrapper"><div class="text">' + text + '</div></div>');
+                $messages.append($message);
+                $messages.scrollTop($messages[0].scrollHeight);
+            };
 
-        // 模拟 AI 打字的函数
-        var sendAiMessage = function(text, delay, callback) {
-            var newMessage = $('<li class="message left"></li>');
-            newMessage.append('<div class="avatar" style="background-image: url(IMAGE/机器人.jpeg);"></div>');
-            var textWrapper = $('<div class="text_wrapper"><div class="text"></div></div>');
-            newMessage.append(textWrapper);
-            $('#message-list').append(newMessage);
+            // 模拟 AI 打字的函数
+            var sendAiMessage = function(text, delay, callback) {
+                var newMessage = $('<li class="message left"></li>');
+                newMessage.append('<div class="avatar" style="background-image: url(IMAGE/机器人.jpeg);"></div>');
+                var textWrapper = $('<div class="text_wrapper"><div class="text"></div></div>');
+                newMessage.append(textWrapper);
+                $('#message-list').append(newMessage);
 
-            // 修改页面内的标题为“正在输入……”
-            $('.title').text("正在输入……");
-            var i = 0;
-            var interval = setInterval(function() {
-                if (i < text.length) {
-                    textWrapper.find('.text').text(text.substring(0, i + 1));
-                    i++;
-                    // 每次字母输出后，滚动页面
-                    $('#message-list').scrollTop($('#message-list')[0].scrollHeight);  // 滚动到底部
-                } else {
-                    clearInterval(interval);
-                    if (callback) callback();
-                    // 恢复标题为“AI系统”
-                    $('.title').text("AI系统");
-                }
-            }, delay); // 打字延迟
-        };
+                // 修改页面内的标题为“正在输入……”
+                $('.title').text("正在输入……");
+                var i = 0;
+                var interval = setInterval(function() {
+                    if (i < text.length) {
+                        textWrapper.find('.text').text(text.substring(0, i + 1));
+                        i++;
+                        // 每次字母输出后，滚动页面
+                        $('#message-list').scrollTop($('#message-list')[0].scrollHeight);  // 滚动到底部
+                    } else {
+                        clearInterval(interval);
+                        if (callback) callback();
+                        // 恢复标题为“AI系统”
+                        $('.title').text("AI系统");
+                    }
+                }, delay); // 打字延迟
+            };
 
 // 动态生成初始消息
-        sendAiMessage("你好！欢迎使用健康咨询AI系统。你可以随时使用本系统进行健康咨询。查询健康资讯、了解健康问题，都可以由该系统完成。现在，请选择下方按钮开启对话。", 50, function() {
-            // 初始消息发送后，不立即发送“您之前是否了解过气候变化？”
-            sendAiMessage("您之前是否了解过癌症筛查？", 50, function() {
-                // 显示“了解/不了解”按钮
-                $('#message-list').append($('#buttonWrapper'));
-                $('#buttonWrapper').show();
+            sendAiMessage("你好！欢迎使用健康咨询AI系统。你可以随时使用本系统进行健康咨询。查询健康资讯、了解健康问题，都可以由该系统完成。现在，请选择下方按钮开启对话。", 50, function() {
+                // 初始消息发送后，不立即发送“您之前是否了解过气候变化？”
+                sendAiMessage("您之前是否了解过癌症筛查？", 50, function() {
+                    // 显示“了解/不了解”按钮
+                    $('#message-list').append($('#buttonWrapper'));
+                    $('#buttonWrapper').show();
+                });
             });
-        });
 
 // 按钮点击事件，更新消息并隐藏按钮
-        $('#understandBtn').click(function() {
-            sendMessage("了解", 'right');  // 使用sendMessage函数显示用户消息
+            $('#understandBtn').click(function() {
+                sendMessage("了解", 'right');  // 使用sendMessage函数显示用户消息
 
-            $('#buttonWrapper').hide(); // 隐藏 "了解/不了解" 按钮
+                $('#buttonWrapper').hide(); // 隐藏 "了解/不了解" 按钮
 
-            // 停留几秒钟后显示AI回复
-            setTimeout(function() {
-                sendAiMessage("您主要想了解针对哪个人群的癌症筛查？", 50, function() {
-                    $('#message-list').append($('#topicWrapper'));
-                    $('#topicWrapper').show(); // 显示话题按钮
-                    setTimeout(function() {
-                        $('#topicWrapper')[0].scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }, 100); // 延时100毫秒
-                });
-            }, 1000); // 等待1秒
-        });
-
-        $('#dontUnderstandBtn').click(function() {
-            sendMessage("不了解", 'right');  // 使用sendMessage函数显示用户消息
-
-            $('#buttonWrapper').hide(); // 隐藏 "了解/不了解" 按钮
-
-            // 停留几秒钟后显示AI回复
-            setTimeout(function() {
-                sendAiMessage("您主要想了解针对哪个人群的癌症筛查？", 50, function() {
-                    $('#message-list').append($('#topicWrapper'));
-                    $('#topicWrapper').show(); // 显示话题按钮
-                    setTimeout(function() {
-                        $('#topicWrapper')[0].scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }, 100); // 延时100毫秒
-                });
-            }, 1000); // 等待2秒
-        });
-        // 话题按钮点击事件
-        $('#climateChangeBtn').click(function() {
-            var userInput = "40岁以上人群";
-            sendMessage(userInput, 'right');  // 用户消息
-
-            $('#topicWrapper').hide(); // 隐藏话题按钮
-
-            // 停留几秒钟后显示AI回复
-            setTimeout(function() {
-                var text1 = "癌症筛查是指通过一系列医学检查手段，在健康人群或高危人群中，早期发现癌症或癌前病变的过程。针对40岁及以上人群，建议从40岁开始进行结肠镜检查以预防结直肠癌；45岁及以上人群，建议接受胃镜检查以预防胃癌。";
-                var text2 = "您是否觉得癌症离自己很遥远呢？事实上，每年有约400万人确诊癌症，其中一半本可以早发现、早治疗。相关数据显示，早期癌症的治愈率超过90%，晚期则不足20%。因此，诚挚建议符合条件的人群考虑定期进行癌症早期筛查，以便早发现、早诊断、早治疗。对那些‘查出来也没用’的观点，或许我们可以更理性地看待：定期体检并非徒劳，而是为健康增添一份保障。生命仅有一次，建议您尽早预约癌症筛查服务。";
-                sendAiMessage(text1, 50, function() {
-                    sendAiMessage(text2, 50, function() {
-                        sendAiMessage("您知道如何降低患癌风险吗？", 50, function() {
-                            $('#buttonWrapper').html('');  // 清空按钮
-                            $('#buttonWrapper').append('<button class="button" id="knowBtn">知道</button>');
-                            $('#buttonWrapper').append('<button class="button" id="dontKnowBtn">不知道</button>');
-                            $('#message-list').append( $('#buttonWrapper'));
-                            $('#buttonWrapper').show();  // 显示新的按钮
-                            setTimeout(function() {
-                                $('#buttonWrapper')[0].scrollIntoView({
-                                    behavior: 'smooth',
-                                    block: 'start'
-                                });
-                            }, 100); // 延时100毫秒
-                        });
-                    });
-                });
-            }, 1000); // 等待2秒
-        });
-
-        $('#climateImpactBtn').click(function() {
-            var userInput = "男性";
-            sendMessage(userInput, 'right');  // 用户消息
-
-            $('#topicWrapper').hide(); // 隐藏话题按钮
-
-            // 停留几秒钟后显示AI回复
-            setTimeout(function() {
-                var text1 = "癌症筛查是指通过一系列医学检查手段，在健康人群或高危人群中，早期发现癌症或癌前病变的过程。针对15岁及以上男性，建议每月进行一次睾丸自查以预防睾丸癌；50岁后，建议每年进行至少一次前列腺特异性抗原检查。";
-                var text2 = "您是否觉得癌症离自己很遥远呢？事实上，每年有约400万人确诊癌症，其中一半本可以早发现、早治疗。相关数据显示，早期癌症的治愈率超过90%，晚期则不足20%。因此，诚挚建议符合条件的人群考虑定期进行癌症早期筛查，以便早发现、早诊断、早治疗。对那些‘查出来也没用’的观点，或许我们可以更理性地看待：定期体检并非徒劳，而是为健康增添一份保障。生命仅有一次，建议您尽早预约癌症筛查服务。";
-                sendAiMessage(text1, 50, function() {
-                    sendAiMessage(text2, 50, function() {
-                        sendAiMessage("您知道如何降低患癌风险吗？", 50, function() {
-                            $('#buttonWrapper').html('');  // 清空按钮
-                            $('#buttonWrapper').append('<button class="button" id="knowBtn">知道</button>');
-                            $('#buttonWrapper').append('<button class="button" id="dontKnowBtn">不知道</button>');
-                            $('#message-list').append( $('#buttonWrapper'));
-                            $('#buttonWrapper').show();  // 显示新的按钮
-                            setTimeout(function() {
-                                $('#buttonWrapper')[0].scrollIntoView({
-                                    behavior: 'smooth',
-                                    block: 'start'
-                                });
-                            }, 100); // 延时100毫秒
-                        });
-                    });
-                });
-            }, 1000); // 等待2秒
-        });
-
-        $('#climateCauseBtn').click(function() {
-            var userInput = "女性";
-            sendMessage(userInput, 'right');  // 用户消息
-
-            $('#topicWrapper').hide(); // 隐藏话题按钮
-
-            // 停留几秒钟后显示AI回复
-            setTimeout(function() {
-                var text1 = "癌症筛查是指通过一系列医学检查手段，在健康人群或高危人群中，早期发现癌症或癌前病变的过程。针对25岁及以上女性，建议每年或两年至少进行一次HPV+TCT联合筛查；40岁以上女性，建议每1～2年进行一次乳腺钼靶筛查。";
-                var text2 = "您是否觉得癌症离自己很遥远呢？事实上，每年有约400万人确诊癌症，其中一半本可以早发现、早治疗。相关数据显示，早期癌症的治愈率超过90%，晚期则不足20%。因此，诚挚建议符合条件的人群考虑定期进行癌症早期筛查，以便早发现、早诊断、早治疗。对那些‘查出来也没用’的观点，或许我们可以更理性地看待：定期体检并非徒劳，而是为健康增添一份保障。生命仅有一次，建议您尽早预约癌症筛查服务。";
-                sendAiMessage(text1, 50, function() {
-                    sendAiMessage(text2, 50, function() {
-                        sendAiMessage("您知道如何降低患癌风险吗？", 50, function() {
-                            $('#buttonWrapper').html('');  // 清空按钮
-                            $('#buttonWrapper').append('<button class="button" id="knowBtn">知道</button>');
-                            $('#buttonWrapper').append('<button class="button" id="dontKnowBtn">不知道</button>');
-                            $('#message-list').append( $('#buttonWrapper'));
-                            $('#buttonWrapper').show();  // 显示新的按钮
-                            setTimeout(function() {
-                                $('#buttonWrapper')[0].scrollIntoView({
-                                    behavior: 'smooth',
-                                    block: 'start'
-                                });
-                            }, 100); // 延时100毫秒
-                        });
-                    });
-                });
-            }, 1000); // 等待2秒
-        });
-
-// 点击“知道”按钮时
-// 点击“知道”按钮时
-        $('#buttonWrapper').on('click', '#knowBtn', function() {
-            var userInput = "知道";
-            sendMessage(userInput, 'right');  // 用户消息
-            $('#buttonWrapper').hide(); // 隐藏按钮
-
-            setTimeout(function() {
-                var actionCall = `肝癌、肺癌、胰腺癌...... 很多癌症一旦发现往往已经到了中晚期。癌症筛查是“发现早期病变”的技术手段，而健康生活方式是“降低癌症风险”的预防策略。
-                除了定期进行癌症筛查外，建议日常生活中采取以下举措以降低患癌风险：
-                ——请均衡饮食，不吃烫食;
-                ——请适当进行体育锻炼;
-                ——请戒烟戒酒；
-                ——请保持充足睡眠和良好心情。`;
-                sendAiMessage(actionCall, 50, function() {
-                    sendAiMessage("通过以上介绍，您对癌症筛查的了解是否有所增长呢？", 50, function() {
-                        $('#buttonWrapper').html('');  // 清空按钮
-                        $('#buttonWrapper').append('<button class="button" id="increaseBtn">有所增长</button>');
-                        $('#buttonWrapper').append('<button class="button" id="noIncreaseBtn">并未增长</button>');
-                        $('#message-list').append( $('#buttonWrapper'));
-                        $('#buttonWrapper').show();  // 显示新的按钮
+                // 停留几秒钟后显示AI回复
+                setTimeout(function() {
+                    sendAiMessage("您主要想了解针对哪个人群的癌症筛查？", 50, function() {
+                        $('#message-list').append($('#topicWrapper'));
+                        $('#topicWrapper').show(); // 显示话题按钮
                         setTimeout(function() {
-                            $('#buttonWrapper')[0].scrollIntoView({
+                            $('#topicWrapper')[0].scrollIntoView({
                                 behavior: 'smooth',
                                 block: 'start'
                             });
                         }, 100); // 延时100毫秒
                     });
-                });
-            }, 1000); // 等待2秒后显示AI的最终回复
-        });
+                }, 1000); // 等待1秒
+            });
+
+            $('#dontUnderstandBtn').click(function() {
+                sendMessage("不了解", 'right');  // 使用sendMessage函数显示用户消息
+
+                $('#buttonWrapper').hide(); // 隐藏 "了解/不了解" 按钮
+
+                // 停留几秒钟后显示AI回复
+                setTimeout(function() {
+                    sendAiMessage("您主要想了解针对哪个人群的癌症筛查？", 50, function() {
+                        $('#message-list').append($('#topicWrapper'));
+                        $('#topicWrapper').show(); // 显示话题按钮
+                        setTimeout(function() {
+                            $('#topicWrapper')[0].scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                            });
+                        }, 100); // 延时100毫秒
+                    });
+                }, 1000); // 等待2秒
+            });
+            // 话题按钮点击事件
+            $('#climateChangeBtn').click(function() {
+                var userInput = "40岁以上人群";
+                sendMessage(userInput, 'right');  // 用户消息
+
+                $('#topicWrapper').hide(); // 隐藏话题按钮
+
+                // 停留几秒钟后显示AI回复
+                setTimeout(function() {
+                    var text1 = "癌症筛查是指通过一系列医学检查手段，在健康人群或高危人群中，早期发现癌症或癌前病变的过程。针对40岁及以上人群，建议从40岁开始进行结肠镜检查以预防结直肠癌；45岁及以上人群，建议接受胃镜检查以预防胃癌。";
+                    var text2 = "您是否觉得癌症离自己很遥远呢？事实上，每年有约400万人确诊癌症，其中一半本可以早发现、早治疗。相关数据显示，早期癌症的治愈率超过90%，晚期则不足20%。因此，诚挚建议符合条件的人群考虑定期进行癌症早期筛查，以便早发现、早诊断、早治疗。对那些‘查出来也没用’的观点，或许我们可以更理性地看待：定期体检并非徒劳，而是为健康增添一份保障。生命仅有一次，建议您尽早预约癌症筛查服务。";
+                    sendAiMessage(text1, 50, function() {
+                        sendAiMessage(text2, 50, function() {
+                            sendAiMessage("您知道如何降低患癌风险吗？", 50, function() {
+                                $('#buttonWrapper').html('');  // 清空按钮
+                                $('#buttonWrapper').append('<button class="button" id="knowBtn">知道</button>');
+                                $('#buttonWrapper').append('<button class="button" id="dontKnowBtn">不知道</button>');
+                                $('#message-list').append( $('#buttonWrapper'));
+                                $('#buttonWrapper').show();  // 显示新的按钮
+                                setTimeout(function() {
+                                    $('#buttonWrapper')[0].scrollIntoView({
+                                        behavior: 'smooth',
+                                        block: 'start'
+                                    });
+                                }, 100); // 延时100毫秒
+                            });
+                        });
+                    });
+                }, 1000); // 等待2秒
+            });
+
+            $('#climateImpactBtn').click(function() {
+                var userInput = "男性";
+                sendMessage(userInput, 'right');  // 用户消息
+
+                $('#topicWrapper').hide(); // 隐藏话题按钮
+
+                // 停留几秒钟后显示AI回复
+                setTimeout(function() {
+                    var text1 = "癌症筛查是指通过一系列医学检查手段，在健康人群或高危人群中，早期发现癌症或癌前病变的过程。针对15岁及以上男性，建议每月进行一次睾丸自查以预防睾丸癌；50岁后，建议每年进行至少一次前列腺特异性抗原检查。";
+                    var text2 = "您是否觉得癌症离自己很遥远呢？事实上，每年有约400万人确诊癌症，其中一半本可以早发现、早治疗。相关数据显示，早期癌症的治愈率超过90%，晚期则不足20%。因此，诚挚建议符合条件的人群考虑定期进行癌症早期筛查，以便早发现、早诊断、早治疗。对那些‘查出来也没用’的观点，或许我们可以更理性地看待：定期体检并非徒劳，而是为健康增添一份保障。生命仅有一次，建议您尽早预约癌症筛查服务。";
+                    sendAiMessage(text1, 50, function() {
+                        sendAiMessage(text2, 50, function() {
+                            sendAiMessage("您知道如何降低患癌风险吗？", 50, function() {
+                                $('#buttonWrapper').html('');  // 清空按钮
+                                $('#buttonWrapper').append('<button class="button" id="knowBtn">知道</button>');
+                                $('#buttonWrapper').append('<button class="button" id="dontKnowBtn">不知道</button>');
+                                $('#message-list').append( $('#buttonWrapper'));
+                                $('#buttonWrapper').show();  // 显示新的按钮
+                                setTimeout(function() {
+                                    $('#buttonWrapper')[0].scrollIntoView({
+                                        behavior: 'smooth',
+                                        block: 'start'
+                                    });
+                                }, 100); // 延时100毫秒
+                            });
+                        });
+                    });
+                }, 1000); // 等待2秒
+            });
+
+            $('#climateCauseBtn').click(function() {
+                var userInput = "女性";
+                sendMessage(userInput, 'right');  // 用户消息
+
+                $('#topicWrapper').hide(); // 隐藏话题按钮
+
+                // 停留几秒钟后显示AI回复
+                setTimeout(function() {
+                    var text1 = "癌症筛查是指通过一系列医学检查手段，在健康人群或高危人群中，早期发现癌症或癌前病变的过程。针对25岁及以上女性，建议每年或两年至少进行一次HPV+TCT联合筛查；40岁以上女性，建议每1～2年进行一次乳腺钼靶筛查。";
+                    var text2 = "您是否觉得癌症离自己很遥远呢？事实上，每年有约400万人确诊癌症，其中一半本可以早发现、早治疗。相关数据显示，早期癌症的治愈率超过90%，晚期则不足20%。因此，诚挚建议符合条件的人群考虑定期进行癌症早期筛查，以便早发现、早诊断、早治疗。对那些‘查出来也没用’的观点，或许我们可以更理性地看待：定期体检并非徒劳，而是为健康增添一份保障。生命仅有一次，建议您尽早预约癌症筛查服务。";
+                    sendAiMessage(text1, 50, function() {
+                        sendAiMessage(text2, 50, function() {
+                            sendAiMessage("您知道如何降低患癌风险吗？", 50, function() {
+                                $('#buttonWrapper').html('');  // 清空按钮
+                                $('#buttonWrapper').append('<button class="button" id="knowBtn">知道</button>');
+                                $('#buttonWrapper').append('<button class="button" id="dontKnowBtn">不知道</button>');
+                                $('#message-list').append( $('#buttonWrapper'));
+                                $('#buttonWrapper').show();  // 显示新的按钮
+                                setTimeout(function() {
+                                    $('#buttonWrapper')[0].scrollIntoView({
+                                        behavior: 'smooth',
+                                        block: 'start'
+                                    });
+                                }, 100); // 延时100毫秒
+                            });
+                        });
+                    });
+                }, 1000); // 等待2秒
+            });
+
+// 点击“知道”按钮时
+// 点击“知道”按钮时
+            $('#buttonWrapper').on('click', '#knowBtn', function() {
+                var userInput = "知道";
+                sendMessage(userInput, 'right');  // 用户消息
+                $('#buttonWrapper').hide(); // 隐藏按钮
+
+                setTimeout(function() {
+                    var actionCall = `肝癌、肺癌、胰腺癌...... 很多癌症一旦发现往往已经到了中晚期。癌症筛查是“发现早期病变”的技术手段，而健康生活方式是“降低癌症风险”的预防策略。
+                除了定期进行癌症筛查外，建议日常生活中采取以下举措以降低患癌风险：
+                ——请均衡饮食，不吃烫食;
+                ——请适当进行体育锻炼;
+                ——请戒烟戒酒；
+                ——请保持充足睡眠和良好心情。`;
+                    sendAiMessage(actionCall, 50, function() {
+                        sendAiMessage("通过以上介绍，您对癌症筛查的了解是否有所增长呢？", 50, function() {
+                            $('#buttonWrapper').html('');  // 清空按钮
+                            $('#buttonWrapper').append('<button class="button" id="increaseBtn">有所增长</button>');
+                            $('#buttonWrapper').append('<button class="button" id="noIncreaseBtn">并未增长</button>');
+                            $('#message-list').append( $('#buttonWrapper'));
+                            $('#buttonWrapper').show();  // 显示新的按钮
+                            setTimeout(function() {
+                                $('#buttonWrapper')[0].scrollIntoView({
+                                    behavior: 'smooth',
+                                    block: 'start'
+                                });
+                            }, 100); // 延时100毫秒
+                        });
+                    });
+                }, 1000); // 等待2秒后显示AI的最终回复
+            });
 
 // 点击“不知道”按钮时
-        $('#buttonWrapper').on('click', '#dontKnowBtn', function() {
-            var userInput = "不知道";
-            sendMessage(userInput, 'right');  // 用户消息
-            $('#buttonWrapper').hide(); // 隐藏按钮
+            $('#buttonWrapper').on('click', '#dontKnowBtn', function() {
+                var userInput = "不知道";
+                sendMessage(userInput, 'right');  // 用户消息
+                $('#buttonWrapper').hide(); // 隐藏按钮
 
-            setTimeout(function() {
-                var actionCall = `肝癌、肺癌、胰腺癌...... 很多癌症一旦发现往往已经到了中晚期。癌症筛查是“发现早期病变”的技术手段，而健康生活方式是“降低癌症风险”的预防策略。
+                setTimeout(function() {
+                    var actionCall = `肝癌、肺癌、胰腺癌...... 很多癌症一旦发现往往已经到了中晚期。癌症筛查是“发现早期病变”的技术手段，而健康生活方式是“降低癌症风险”的预防策略。
                 除了定期进行癌症筛查外，建议日常生活中采取以下举措以降低患癌风险：
                 ——请均衡饮食，不吃烫食;
                 ——请适当进行体育锻炼;
                 ——请戒烟戒酒；
                 ——请保持充足睡眠和良好心情。`;
-                sendAiMessage(actionCall, 50, function() {
-                    sendAiMessage("通过以上介绍，您对癌症筛查的了解是否有所增长呢？", 50, function() {
-                        $('#buttonWrapper').html('');  // 清空按钮
-                        $('#buttonWrapper').append('<button class="button" id="increaseBtn">有所增长</button>');
-                        $('#buttonWrapper').append('<button class="button" id="noIncreaseBtn">并未增长</button>');
-                        $('#message-list').append( $('#buttonWrapper'));
-                        $('#buttonWrapper').show();  // 显示新的按钮
-                        setTimeout(function() {
-                            $('#buttonWrapper')[0].scrollIntoView({
-                                behavior: 'smooth',
-                                block: 'start'
+                    sendAiMessage(actionCall, 50, function() {
+                        sendAiMessage("通过以上介绍，您对癌症筛查的了解是否有所增长呢？", 50, function() {
+                            $('#buttonWrapper').html('');  // 清空按钮
+                            $('#buttonWrapper').append('<button class="button" id="increaseBtn">有所增长</button>');
+                            $('#buttonWrapper').append('<button class="button" id="noIncreaseBtn">并未增长</button>');
+                            $('#message-list').append( $('#buttonWrapper'));
+                            $('#buttonWrapper').show();  // 显示新的按钮
+                            setTimeout(function() {
+                                $('#buttonWrapper')[0].scrollIntoView({
+                                    behavior: 'smooth',
+                                    block: 'start'
+                                });
+                            }, 100); // 延时100毫秒
+                        });
+                    });
+                }, 1000); // 等待2秒后显示AI的最终回复
+            });
+            // 点击“有所增长”与“并未增长”按钮时
+            $(document).ready(function() {
+                $('#buttonWrapper').on('click', '#increaseBtn', function() {
+                    var userInput = "有所增长";
+                    sendMessage(userInput, 'right');  // 用户消息
+                    $('#buttonWrapper').hide(); // 隐藏按钮
+
+                    setTimeout(function() {
+                        var conclusion = "本回答由AI系统生成，内容仅供参考，请仔细甄别。";
+                        sendAiMessage(conclusion, 50, function() {
+                            sendAiMessage("【互动已结束，请关闭对话框，返回问卷继续作答】", 50, function() {
+                                // 添加退出按钮
+                                $('#buttonWrapper').html('');  // 清空按钮
+                                $('#buttonWrapper').append('<button class="button" id="exitBtn">退出并返回问卷</button>');
+                                $('#message-list').append($('#buttonWrapper'));
+                                $('#buttonWrapper').show();  // 显示退出按钮
+                                setTimeout(function() {
+                                    $('#buttonWrapper')[0].scrollIntoView({
+                                        behavior: 'smooth',
+                                        block: 'start'
+                                    });
+                                }, 100); // 延时100毫秒
                             });
-                        }, 100); // 延时100毫秒
-                    });
-                });
-            }, 1000); // 等待2秒后显示AI的最终回复
-        });
-        // 点击“有所增长”与“并未增长”按钮时
-        $(document).ready(function() {
-            $('#buttonWrapper').on('click', '#increaseBtn', function() {
-                var userInput = "有所增长";
-                sendMessage(userInput, 'right');  // 用户消息
-                $('#buttonWrapper').hide(); // 隐藏按钮
-
-                setTimeout(function() {
-                    var conclusion = "本回答由AI系统生成，内容仅供参考，请仔细甄别。";
-                    sendAiMessage(conclusion, 50, function() {
-                        sendAiMessage("【互动已结束，请关闭对话框，返回问卷继续作答】", 50, function() {
-                            // 添加退出按钮
-                            $('#buttonWrapper').html('');  // 清空按钮
-                            $('#buttonWrapper').append('<button class="button" id="exitBtn">退出并返回问卷</button>');
-                            $('#message-list').append($('#buttonWrapper'));
-                            $('#buttonWrapper').show();  // 显示退出按钮
-                            setTimeout(function() {
-                                $('#buttonWrapper')[0].scrollIntoView({
-                                    behavior: 'smooth',
-                                    block: 'start'
-                                });
-                            }, 100); // 延时100毫秒
                         });
-                    });
-                }, 1000); // 等待1秒后显示AI的最终回复
+                    }, 1000); // 等待2秒后显示AI的最终回复
 
-                // 返回问卷的功能
-                $('#buttonWrapper').on('click', '#exitBtn', function() {
-                    returnToSurvey();  // 调用返回问卷的函数
+                    // 返回问卷的功能
+                    $('#buttonWrapper').on('click', '#exitBtn', function() {
+                        returnToSurvey();  // 调用返回问卷的函数
+                    });
                 });
+
+                $('#buttonWrapper').on('click', '#noIncreaseBtn', function() {
+                    var userInput = "并未增长";
+                    sendMessage(userInput, 'right');  // 用户消息
+                    $('#buttonWrapper').hide(); // 隐藏按钮
+
+                    setTimeout(function() {
+                        var conclusion = "本回答由AI系统生成，内容仅供参考，请仔细甄别。";
+                        sendAiMessage(conclusion, 50, function() {
+                            sendAiMessage("【互动已结束，请关闭对话框，返回问卷继续作答】", 50, function() {
+                                // 添加退出按钮
+                                $('#buttonWrapper').html('');  // 清空按钮
+                                $('#buttonWrapper').append('<button class="button" id="exitBtn">退出并返回问卷</button>');
+                                $('#message-list').append($('#buttonWrapper'));
+                                $('#buttonWrapper').show();  // 显示退出按钮
+                                setTimeout(function() {
+                                    $('#buttonWrapper')[0].scrollIntoView({
+                                        behavior: 'smooth',
+                                        block: 'start'
+                                    });
+                                }, 100); // 延时100毫秒
+                            });
+                        });
+                    }, 1000); // 等待2秒后显示AI的最终回复
+
+                    // 返回问卷的功能
+                    $('#buttonWrapper').on('click', '#exitBtn', function() {
+                        returnToSurvey();  // 调用返回问卷的函数
+                    });
+                });
+
+                // 返回问卷函数
+                function returnToSurvey() {
+                    // 获取URL中的 return_page 参数（如 ?return_page=2）
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const returnPage = urlParams.get('return_page') || '1'; // 默认第1页
+
+                    // 跳转回问卷，并指定页数
+                    window.location.href = `https://www.credamo.cc/answer.html#/s/yAjuiqano/?step=${returnPage}`;
+                }
             });
 
-            $('#buttonWrapper').on('click', '#noIncreaseBtn', function() {
-                var userInput = "并未增长";
-                sendMessage(userInput, 'right');  // 用户消息
-                $('#buttonWrapper').hide(); // 隐藏按钮
-
-                setTimeout(function() {
-                    var conclusion = "本回答由AI系统生成，内容仅供参考，请仔细甄别。";
-                    sendAiMessage(conclusion, 50, function() {
-                        sendAiMessage("【互动已结束，请关闭对话框，返回问卷继续作答】", 50, function() {
-                            // 添加退出按钮
-                            $('#buttonWrapper').html('');  // 清空按钮
-                            $('#buttonWrapper').append('<button class="button" id="exitBtn">退出并返回问卷</button>');
-                            $('#message-list').append($('#buttonWrapper'));
-                            $('#buttonWrapper').show();  // 显示退出按钮
-                            setTimeout(function() {
-                                $('#buttonWrapper')[0].scrollIntoView({
-                                    behavior: 'smooth',
-                                    block: 'start'
-                                });
-                            }, 100); // 延时100毫秒
-                        });
-                    });
-                }, 1000); // 等待1秒后显示AI的最终回复
-
-                // 返回问卷的功能
-                $('#buttonWrapper').on('click', '#exitBtn', function() {
-                    returnToSurvey();  // 调用返回问卷的函数
-                });
-            });
-
-            // 返回问卷函数（使用 history.pushState() 和 hash 进行跳转）
-            function returnToSurvey() {
-                // 获取存储在sessionStorage中的 return_page 参数（例如从之前的跳转中存储的页面号）
-                const returnPage = sessionStorage.getItem('return_page') || '2'; // 默认第1页
-
-                // 使用 window.location.hash 跳转到指定页
-                //window.location.hash = `#/step/${returnPage}`; // #/step/{pageNumber}
-                window.location.hash = `#/s/QZfY3qano/step/${returnPage}`; // #/s/QZfY3qano/step/{pageNumber}
-            }
         });
-
-    });
-</script>
+    </script>
 
 </body>
 </html>
