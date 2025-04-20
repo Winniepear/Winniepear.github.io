@@ -502,7 +502,7 @@
                             }, 100); // 延时100毫秒
                         });
                     });
-                }, 1000); // 等待2秒后显示AI的最终回复
+                }, 1000); // 等待1秒后显示AI的最终回复
 
                 // 返回问卷的功能
                 $('#buttonWrapper').on('click', '#exitBtn', function() {
@@ -532,7 +532,7 @@
                             }, 100); // 延时100毫秒
                         });
                     });
-                }, 1000); // 等待2秒后显示AI的最终回复
+                }, 1000); // 等待1秒后显示AI的最终回复
 
                 // 返回问卷的功能
                 $('#buttonWrapper').on('click', '#exitBtn', function() {
@@ -540,14 +540,14 @@
                 });
             });
 
-            // 返回问卷函数
+            // 返回问卷函数（使用 history.pushState() 和 hash 进行跳转）
             function returnToSurvey() {
-                // 获取URL中的 return_page 参数（如 ?return_page=2）
-                const urlParams = new URLSearchParams(window.location.search);
-                const returnPage = urlParams.get('return_page') || '1'; // 默认第1页
+                // 获取存储在sessionStorage中的 return_page 参数（例如从之前的跳转中存储的页面号）
+                const returnPage = sessionStorage.getItem('return_page') || '2'; // 默认第1页
 
-                // 跳转回问卷，并指定页数
-                window.location.href = `https://www.credamo.cc/answer.html#/s/yAjuiqano/?step=${returnPage}`;
+                // 使用 window.location.hash 跳转到指定页
+                //window.location.hash = `#/step/${returnPage}`; // #/step/{pageNumber}
+                window.location.hash = `#/s/QZfY3qano/step/${returnPage}`; // #/s/QZfY3qano/step/{pageNumber}
             }
         });
 
